@@ -4,290 +4,404 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Arctis Vision — Betriebssysteme für Restaurants, Friseure & Dienstleister</title>
-<meta name="description" content="Arctis Vision baut das digitale Betriebssystem für dein Geschäft: Webseite, Bestellung, Kassensystem und Zahlung — sauber integriert. Für Restaurants, Friseure und Dienstleister." />
+<meta name="description" content="Arctis Vision baut das digitale Betriebssystem für dein Geschäft: Webseite, Bestellung, Kassensystem und Zahlung — sauber integriert." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
-  :root{
-    --ink:#060A12;
-    --ink-2:#0A1120;
-    --panel:#0D1524;
-    --panel-2:#111C30;
-    --frost:#EAF2FD;
-    --frost-dim:#9DB0CA;
-    --steel:#61748D;
-    --ice:#63D8EC;
-    --teal:#3FB8D4;
-    --aurora:#9A8CF5;
-    --line:rgba(255,255,255,.08);
-    --line-2:rgba(255,255,255,.14);
-    --glow-ice:rgba(99,216,236,.35);
-    --glow-aur:rgba(154,140,245,.30);
-    --maxw:1180px;
-    --ease:cubic-bezier(.22,.61,.36,1);
-  }
+/* ============================================================
+   ARCTIS VISION v2 — "Polarnacht-Panorama"
+   Fluid, responsive: Handy → Laptop → TV (1800px+)
+   ============================================================ */
+:root{
+  --ink:#04070F;
+  --ink-2:#070C18;
+  --night:#0A1226;
+  --panel:#0C1526;
+  --frost:#EDF4FE;
+  --frost-dim:#A2B4CF;
+  --steel:#5E7290;
+  --ice:#6FE0F2;
+  --teal:#37B5D6;
+  --aurora:#A08FFF;
+  --aurora-2:#5EEAD4;
+  --line:rgba(255,255,255,.08);
+  --line-2:rgba(255,255,255,.16);
+  --glow-ice:rgba(111,224,242,.35);
+  --glow-aur:rgba(160,143,255,.28);
 
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    background:var(--ink);
-    color:var(--frost);
-    font-family:"Manrope",system-ui,sans-serif;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
-  }
-  a{color:inherit;text-decoration:none}
-  ::selection{background:var(--ice);color:var(--ink)}
+  /* Fluid scale — wächst vom Handy bis zum Fernseher mit */
+  --fs-hero:clamp(2.5rem, 1rem + 6.5vw, 6.5rem);
+  --fs-h2:clamp(1.8rem, 1rem + 2.6vw, 3.4rem);
+  --fs-h3:clamp(1.1rem, .9rem + .6vw, 1.5rem);
+  --fs-body:clamp(1rem, .92rem + .28vw, 1.3rem);
+  --fs-small:clamp(.82rem, .78rem + .15vw, 1rem);
+  --fs-mono:clamp(.68rem, .64rem + .12vw, .85rem);
+  --space:clamp(72px, 5vw + 40px, 160px);
+  --maxw:min(1240px, 92vw);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+}
 
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);
+  color:var(--frost);
+  font-family:"Manrope",system-ui,sans-serif;
+  font-size:var(--fs-body);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+::selection{background:var(--ice);color:var(--ink)}
+:focus-visible{outline:2px solid var(--ice);outline-offset:3px;border-radius:4px}
 
-  .mono{
-    font-family:"JetBrains Mono",monospace;
-    font-size:.72rem;
-    letter-spacing:.18em;
-    text-transform:uppercase;
-    color:var(--ice);
-  }
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(18px,3vw,40px)}
+.mono{
+  font-family:"JetBrains Mono",monospace;
+  font-size:var(--fs-mono);
+  letter-spacing:.2em;text-transform:uppercase;color:var(--ice);
+}
 
-  /* ---------- Aurora background ---------- */
-  .aurora{
-    position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
-  }
-  .aurora::before,.aurora::after{
-    content:"";position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;
-  }
-  .aurora::before{
-    width:60vw;height:60vw;top:-25vw;left:-10vw;
-    background:radial-gradient(circle at center,var(--glow-ice),transparent 60%);
-    animation:drift1 24s var(--ease) infinite alternate;
-  }
-  .aurora::after{
-    width:55vw;height:55vw;top:-15vw;right:-15vw;
-    background:radial-gradient(circle at center,var(--glow-aur),transparent 60%);
-    animation:drift2 30s var(--ease) infinite alternate;
-  }
-  @keyframes drift1{to{transform:translate(12vw,10vw) scale(1.15)}}
-  @keyframes drift2{to{transform:translate(-10vw,14vw) scale(1.1)}}
-  .grain{
-    position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.04;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
+/* ============================================================
+   NAV — Frostglas
+   ============================================================ */
+header{
+  position:fixed;inset:0 0 auto;z-index:100;
+  transition:background .4s,border-color .4s;
+  border-bottom:1px solid transparent;
+}
+header.scrolled{
+  background:rgba(4,7,15,.72);
+  backdrop-filter:blur(16px) saturate(1.3);
+  -webkit-backdrop-filter:blur(16px) saturate(1.3);
+  border-color:var(--line);
+}
+nav{display:flex;align-items:center;justify-content:space-between;height:clamp(64px,6vw,88px)}
+.brand{display:flex;align-items:center;gap:12px;font-family:"Space Grotesk";font-weight:600;font-size:clamp(1.05rem,1rem+.3vw,1.4rem);letter-spacing:.01em;min-height:44px}
+.brand .mark{width:clamp(26px,2vw,34px);height:clamp(26px,2vw,34px);flex:none}
+.navlinks{display:flex;gap:clamp(20px,2.6vw,44px);align-items:center}
+.navlinks a{font-size:var(--fs-small);font-weight:500;color:var(--frost-dim);transition:color .25s;padding:10px 2px;min-height:44px;display:inline-flex;align-items:center}
+.navlinks a:hover{color:var(--frost)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  font-family:"Space Grotesk";font-weight:600;font-size:var(--fs-small);
+  padding:clamp(11px,.9vw,16px) clamp(20px,1.6vw,32px);
+  min-height:44px;border-radius:100px;cursor:pointer;border:1px solid transparent;
+  transition:transform .3s var(--ease),box-shadow .35s,border-color .3s,background .3s;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--ice),var(--teal));
+  color:#02141c;box-shadow:0 6px 28px -8px var(--glow-ice);
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 40px -10px var(--glow-ice)}
+.btn-ghost{border-color:var(--line-2);color:var(--frost);background:rgba(255,255,255,.03)}
+.btn-ghost:hover{border-color:var(--ice);color:var(--ice)}
+.nav-toggle{display:none;background:none;border:0;color:var(--frost);cursor:pointer;min-width:44px;min-height:44px}
 
-  main,header,footer{position:relative;z-index:2}
+/* Mobile menu */
+.mobile-menu{
+  display:none;position:fixed;inset:0;z-index:99;background:rgba(4,7,15,.96);
+  backdrop-filter:blur(20px);padding:120px 32px;flex-direction:column;gap:8px;
+}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:"Space Grotesk";font-size:1.6rem;font-weight:600;padding:16px 0;border-bottom:1px solid var(--line);color:var(--frost)}
 
-  /* ---------- Nav ---------- */
-  header{
-    position:sticky;top:0;z-index:50;
-    backdrop-filter:blur(14px);
-    background:linear-gradient(to bottom,rgba(6,10,18,.85),rgba(6,10,18,.35));
-    border-bottom:1px solid var(--line);
-  }
-  nav{display:flex;align-items:center;justify-content:space-between;height:72px}
-  .brand{display:flex;align-items:center;gap:12px;font-family:"Space Grotesk";font-weight:600;font-size:1.12rem;letter-spacing:.01em}
-  .brand .mark{width:26px;height:26px;position:relative;flex:none}
-  .brand .mark svg{width:100%;height:100%;display:block}
-  .navlinks{display:flex;gap:34px;align-items:center}
-  .navlinks a{font-size:.92rem;color:var(--frost-dim);transition:color .25s}
-  .navlinks a:hover{color:var(--frost)}
-  .btn{
-    display:inline-flex;align-items:center;gap:8px;
-    font-family:"Space Grotesk";font-weight:600;font-size:.92rem;
-    padding:11px 20px;border-radius:100px;cursor:pointer;border:1px solid transparent;
-    transition:transform .25s var(--ease),box-shadow .3s,background .3s;
-  }
-  .btn-primary{
-    background:linear-gradient(135deg,var(--ice),var(--teal));
-    color:#03121a;box-shadow:0 4px 24px -6px var(--glow-ice);
-  }
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 34px -8px var(--glow-ice)}
-  .btn-ghost{border:1px solid var(--line-2);color:var(--frost);background:rgba(255,255,255,.02)}
-  .btn-ghost:hover{border-color:var(--ice);color:var(--ice)}
-  .nav-toggle{display:none;background:none;border:0;color:var(--frost);cursor:pointer}
+/* ============================================================
+   HERO — Das Panorama (Signature)
+   ============================================================ */
+.hero{
+  position:relative;min-height:100svh;display:flex;flex-direction:column;
+  justify-content:center;overflow:hidden;
+  background:linear-gradient(to bottom,#03040A 0%,#060B1C 45%,#0A1430 78%,#0D1B3E 100%);
+}
+/* Sterne */
+.stars{position:absolute;inset:0;pointer-events:none}
+.stars span{
+  position:absolute;width:2px;height:2px;border-radius:50%;background:var(--frost);
+  animation:twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.9}}
 
-  /* ---------- Hero ---------- */
-  .hero{padding:96px 0 72px;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
-  .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:26px}
-  .hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--ice);box-shadow:0 0 12px var(--ice);animation:pulse 2.4s infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-  h1{
-    font-family:"Space Grotesk";font-weight:600;
-    font-size:clamp(2.4rem,5.2vw,4.05rem);line-height:1.04;letter-spacing:-.02em;
-  }
-  h1 .grad{
-    background:linear-gradient(115deg,var(--ice) 10%,var(--aurora) 90%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .hero p.lead{color:var(--frost-dim);font-size:1.13rem;max-width:36ch;margin:26px 0 34px}
-  .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
-  .hero-meta{display:flex;gap:28px;margin-top:40px;flex-wrap:wrap}
-  .hero-meta div{border-left:1px solid var(--line-2);padding-left:14px}
-  .hero-meta .n{font-family:"Space Grotesk";font-size:1.5rem;font-weight:600;color:var(--frost)}
-  .hero-meta .l{font-size:.82rem;color:var(--steel)}
+/* Aurora-Bänder */
+.aurora-band{
+  position:absolute;left:-20%;width:140%;height:38vh;top:4vh;
+  pointer-events:none;filter:blur(46px);opacity:.6;
+  background:linear-gradient(100deg,transparent 5%,var(--glow-aur) 28%,var(--glow-ice) 52%,rgba(94,234,212,.22) 74%,transparent 95%);
+  transform:skewY(-5deg);
+  animation:auroraflow 14s var(--ease) infinite alternate;
+}
+.aurora-band.b2{top:16vh;height:26vh;opacity:.35;animation-duration:19s;animation-delay:-6s;transform:skewY(4deg)}
+@keyframes auroraflow{
+  from{transform:skewY(-5deg) translateX(-6%) scaleY(1)}
+  to{transform:skewY(-3deg) translateX(6%) scaleY(1.25)}
+}
 
-  /* ---------- OS dashboard mockup (signature) ---------- */
-  .os{
-    position:relative;border-radius:20px;padding:1px;
-    background:linear-gradient(150deg,var(--line-2),transparent 40%,transparent 60%,var(--glow-aur));
-    box-shadow:0 40px 90px -40px rgba(0,0,0,.9),0 0 60px -30px var(--glow-ice);
-    animation:float 7s ease-in-out infinite;
-  }
-  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-  .os-inner{background:linear-gradient(160deg,var(--panel),var(--ink-2));border-radius:19px;overflow:hidden}
-  .os-bar{display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.02)}
-  .os-bar .d{width:11px;height:11px;border-radius:50%;background:#2a3a52}
-  .os-bar .title{margin-left:8px;font-family:"JetBrains Mono";font-size:.76rem;color:var(--frost-dim)}
-  .os-bar .live{margin-left:auto;display:flex;align-items:center;gap:7px;font-family:"JetBrains Mono";font-size:.68rem;color:var(--ice)}
-  .os-bar .live i{width:7px;height:7px;border-radius:50%;background:var(--ice);box-shadow:0 0 10px var(--ice);animation:pulse 1.8s infinite;font-style:normal}
-  .os-body{padding:20px}
-  .os-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
-  .stat{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:14px}
-  .stat .lbl{font-family:"JetBrains Mono";font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--steel)}
-  .stat .val{font-family:"Space Grotesk";font-size:1.55rem;font-weight:600;margin-top:6px}
-  .stat .val .u{font-size:.85rem;color:var(--frost-dim)}
-  .os-row{display:grid;grid-template-columns:1.3fr 1fr;gap:14px}
-  .panel{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:14px}
-  .panel h4{font-family:"JetBrains Mono";font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--steel);font-weight:500;margin-bottom:12px}
-  .bars{display:flex;align-items:flex-end;gap:7px;height:70px}
-  .bars span{flex:1;background:linear-gradient(to top,var(--teal),var(--ice));border-radius:4px 4px 0 0;opacity:.85;animation:grow 3s var(--ease) infinite alternate}
-  .bars span:nth-child(2){animation-delay:.2s}
-  .bars span:nth-child(3){animation-delay:.4s}
-  .bars span:nth-child(4){animation-delay:.6s}
-  .bars span:nth-child(5){animation-delay:.8s}
-  .bars span:nth-child(6){animation-delay:1s}
-  @keyframes grow{from{transform:scaleY(.55);transform-origin:bottom}to{transform:scaleY(1);transform-origin:bottom}}
-  .order{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:.82rem}
-  .order:last-child{border-bottom:0}
-  .order .tag{width:8px;height:8px;border-radius:50%;background:var(--ice);flex:none}
-  .order .amt{margin-left:auto;font-family:"JetBrains Mono";color:var(--frost-dim)}
-  .order.new{animation:slidein .6s var(--ease)}
-  @keyframes slidein{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+/* Bergketten — steigen beim Laden auf, Parallax beim Scrollen */
+.range{position:absolute;left:0;right:0;bottom:0;pointer-events:none;will-change:transform}
+.range svg{width:100%;height:auto;min-height:120px}
+.range.r3{z-index:1;opacity:.9;transform:translateY(100%);animation:rise 1.4s var(--ease-out) .15s forwards}
+.range.r2{z-index:2;transform:translateY(100%);animation:rise 1.4s var(--ease-out) .35s forwards}
+.range.r1{z-index:3;transform:translateY(100%);animation:rise 1.4s var(--ease-out) .55s forwards}
+@keyframes rise{to{transform:translateY(0)}}
 
-  /* ---------- Section frame ---------- */
-  section{padding:96px 0}
-  .sec-head{max-width:60ch;margin-bottom:52px}
-  .sec-head h2{font-family:"Space Grotesk";font-weight:600;font-size:clamp(1.9rem,3.6vw,2.7rem);letter-spacing:-.015em;line-height:1.1;margin:16px 0 0}
-  .sec-head p{color:var(--frost-dim);margin-top:16px;font-size:1.05rem}
+.hero-content{
+  position:relative;z-index:5;text-align:center;
+  padding-bottom:clamp(20vh,26vh,30vh);
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;margin-bottom:clamp(20px,2vw,34px);
+  opacity:0;animation:fadeup 1s var(--ease-out) .7s forwards;
+}
+.hero-eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--ice);box-shadow:0 0 14px var(--ice);animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+h1{
+  font-family:"Space Grotesk";font-weight:600;
+  font-size:var(--fs-hero);line-height:1.02;letter-spacing:-.025em;
+}
+h1 .line{display:block;overflow:hidden}
+h1 .line span{display:block;transform:translateY(110%);animation:lineup 1s var(--ease-out) forwards}
+h1 .line:nth-child(1) span{animation-delay:.85s}
+h1 .line:nth-child(2) span{animation-delay:1s}
+@keyframes lineup{to{transform:translateY(0)}}
+h1 .grad{
+  background:linear-gradient(115deg,var(--ice) 5%,var(--aurora-2) 45%,var(--aurora) 95%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p.lead{
+  color:var(--frost-dim);max-width:44ch;margin:clamp(22px,2vw,36px) auto 0;
+  opacity:0;animation:fadeup 1s var(--ease-out) 1.25s forwards;
+}
+.hero-cta{
+  display:flex;gap:16px;justify-content:center;flex-wrap:wrap;
+  margin-top:clamp(28px,2.6vw,44px);
+  opacity:0;animation:fadeup 1s var(--ease-out) 1.45s forwards;
+}
+@keyframes fadeup{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.scroll-hint{
+  position:absolute;bottom:clamp(20px,3vh,44px);left:50%;transform:translateX(-50%);z-index:6;
+  display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--steel);
+  font-family:"JetBrains Mono";font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;
+  opacity:0;animation:fadeup 1s var(--ease-out) 2s forwards;
+}
+.scroll-hint .lineV{width:1px;height:34px;background:linear-gradient(to bottom,var(--ice),transparent);animation:drop 1.8s var(--ease) infinite}
+@keyframes drop{from{transform:scaleY(0);transform-origin:top}55%{transform:scaleY(1);transform-origin:top}56%{transform-origin:bottom}to{transform:scaleY(0);transform-origin:bottom}}
 
-  /* ---------- Branchen strip ---------- */
-  .branchen{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:40px 0}
-  .branchen .wrap{display:flex;align-items:center;gap:40px;flex-wrap:wrap;justify-content:space-between}
-  .branchen .lab{font-family:"JetBrains Mono";font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel)}
-  .branchen .items{display:flex;gap:38px;flex-wrap:wrap}
-  .branchen .items span{font-family:"Space Grotesk";font-weight:500;color:var(--frost-dim);font-size:1.05rem;transition:color .25s}
-  .branchen .items span:hover{color:var(--ice)}
+/* ============================================================
+   TICKER — laufendes Band
+   ============================================================ */
+.ticker{
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:clamp(14px,1.2vw,22px) 0;overflow:hidden;background:var(--ink-2);position:relative;z-index:5;
+}
+.ticker-track{display:flex;gap:0;width:max-content;animation:marquee 30s linear infinite}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker-track span{
+  font-family:"Space Grotesk";font-weight:500;color:var(--frost-dim);
+  font-size:clamp(.95rem,.9rem+.3vw,1.3rem);white-space:nowrap;padding:0 clamp(22px,2vw,40px);
+  display:flex;align-items:center;gap:clamp(22px,2vw,40px);
+}
+.ticker-track span::after{content:"✳";color:var(--ice);font-size:.8em}
+@keyframes marquee{to{transform:translateX(-50%)}}
 
-  /* ---------- Leistungen cards ---------- */
-  .grid4{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-  .card{
-    background:linear-gradient(165deg,var(--panel),var(--ink-2));
-    border:1px solid var(--line);border-radius:18px;padding:30px;position:relative;overflow:hidden;
-    transition:transform .4s var(--ease),border-color .4s;
-  }
-  .card::after{content:"";position:absolute;inset:0;border-radius:18px;background:radial-gradient(circle at top right,var(--glow-ice),transparent 55%);opacity:0;transition:opacity .4s;pointer-events:none}
-  .card:hover{transform:translateY(-6px);border-color:var(--line-2)}
-  .card:hover::after{opacity:.16}
-  .card .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:rgba(99,216,236,.1);border:1px solid rgba(99,216,236,.25);margin-bottom:20px}
-  .card .ic svg{width:22px;height:22px;stroke:var(--ice)}
-  .card h3{font-family:"Space Grotesk";font-weight:600;font-size:1.25rem;margin-bottom:10px}
-  .card p{color:var(--frost-dim);font-size:.96rem}
-  .card .idx{position:absolute;top:26px;right:28px;font-family:"JetBrains Mono";font-size:.72rem;color:var(--steel)}
+/* ============================================================
+   SECTIONS — gemeinsames Gerüst
+   ============================================================ */
+section{padding:var(--space) 0;position:relative}
+.sec-head{max-width:62ch;margin-bottom:clamp(40px,4vw,72px)}
+.sec-head h2{
+  font-family:"Space Grotesk";font-weight:600;font-size:var(--fs-h2);
+  letter-spacing:-.02em;line-height:1.08;margin-top:16px;
+}
+.sec-head p{color:var(--frost-dim);margin-top:16px}
 
-  /* ---------- System showcase ---------- */
-  .showcase{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-  .feat-list{list-style:none;margin-top:12px}
-  .feat-list li{display:flex;gap:16px;padding:18px 0;border-bottom:1px solid var(--line)}
-  .feat-list li:last-child{border-bottom:0}
-  .feat-list .chk{flex:none;width:24px;height:24px;border-radius:7px;background:rgba(99,216,236,.12);border:1px solid rgba(99,216,236,.3);display:grid;place-items:center;margin-top:2px}
-  .feat-list .chk svg{width:13px;height:13px;stroke:var(--ice)}
-  .feat-list h4{font-family:"Space Grotesk";font-weight:600;font-size:1.05rem;margin-bottom:3px}
-  .feat-list p{color:var(--frost-dim);font-size:.92rem}
+/* Reveal */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease-out),transform .9s var(--ease-out)}
+.reveal.in{opacity:1;transform:none}
 
-  /* ---------- Ablauf (process) ---------- */
-  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;counter-reset:s}
-  .step{position:relative;padding-top:34px}
-  .step::before{
-    counter-increment:s;content:"0" counter(s);
-    font-family:"JetBrains Mono";font-size:.8rem;color:var(--ice);
-    position:absolute;top:0;left:0;
-  }
-  .step::after{content:"";position:absolute;top:6px;left:34px;right:-10px;height:1px;background:var(--line)}
-  .step:last-child::after{display:none}
-  .step h4{font-family:"Space Grotesk";font-weight:600;font-size:1.12rem;margin-bottom:8px}
-  .step p{color:var(--frost-dim);font-size:.92rem}
+/* ============================================================
+   EXPEDITION — Leistungen als Route (statt Karten-Grid)
+   ============================================================ */
+.route{position:relative}
+.route::before{
+  content:"";position:absolute;left:clamp(19px,2vw,27px);top:10px;bottom:10px;width:2px;
+  background:linear-gradient(to bottom,var(--ice),var(--aurora) 60%,transparent);
+  opacity:.4;
+}
+.camp{
+  display:grid;grid-template-columns:clamp(40px,4vw,56px) 1fr;gap:clamp(18px,2.4vw,40px);
+  padding:clamp(26px,2.6vw,46px) 0;position:relative;
+}
+.camp .node{
+  width:clamp(40px,4vw,56px);height:clamp(40px,4vw,56px);border-radius:50%;
+  background:var(--ink-2);border:1px solid var(--line-2);
+  display:grid;place-items:center;position:relative;z-index:2;
+  transition:border-color .4s,box-shadow .4s;
+}
+.camp:hover .node{border-color:var(--ice);box-shadow:0 0 24px -4px var(--glow-ice)}
+.camp .node svg{width:45%;height:45%;stroke:var(--ice)}
+.camp .body{
+  background:linear-gradient(160deg,rgba(255,255,255,.035),rgba(255,255,255,.01));
+  border:1px solid var(--line);border-radius:20px;
+  padding:clamp(22px,2.4vw,40px);
+  transition:transform .45s var(--ease),border-color .45s,background .45s;
+}
+.camp:hover .body{transform:translateX(8px);border-color:var(--line-2)}
+.camp .alt{font-family:"JetBrains Mono";font-size:var(--fs-mono);letter-spacing:.16em;color:var(--steel);text-transform:uppercase}
+.camp h3{font-family:"Space Grotesk";font-weight:600;font-size:var(--fs-h3);margin:8px 0 10px}
+.camp p{color:var(--frost-dim);max-width:60ch}
 
-  /* ---------- CTA ---------- */
-  .cta-band{
-    border-radius:24px;padding:64px 48px;text-align:center;position:relative;overflow:hidden;
-    background:linear-gradient(150deg,var(--panel-2),var(--ink-2));
-    border:1px solid var(--line-2);
-  }
-  .cta-band::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 0%,var(--glow-ice),transparent 55%),radial-gradient(circle at 80% 120%,var(--glow-aur),transparent 55%);opacity:.5}
-  .cta-band > *{position:relative}
-  .cta-band h2{font-family:"Space Grotesk";font-weight:600;font-size:clamp(1.9rem,3.6vw,2.7rem);letter-spacing:-.015em;line-height:1.1}
-  .cta-band p{color:var(--frost-dim);max-width:48ch;margin:18px auto 32px;font-size:1.08rem}
+/* ============================================================
+   SYSTEM — OS-Fenster mit Live-Gefühl
+   ============================================================ */
+.showcase{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,5vw,90px);align-items:center}
+.os{
+  position:relative;border-radius:22px;padding:1px;
+  background:linear-gradient(150deg,var(--line-2),transparent 40%,transparent 60%,var(--glow-aur));
+  box-shadow:0 50px 110px -50px rgba(0,0,0,.95),0 0 70px -30px var(--glow-ice);
+  animation:float 8s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-.3deg)}50%{transform:translateY(-12px) rotate(.3deg)}}
+.os-inner{background:linear-gradient(160deg,var(--panel),var(--ink-2));border-radius:21px;overflow:hidden}
+.os-bar{display:flex;align-items:center;gap:8px;padding:clamp(12px,1vw,18px) clamp(14px,1.4vw,22px);border-bottom:1px solid var(--line);background:rgba(255,255,255,.02)}
+.os-bar .d{width:11px;height:11px;border-radius:50%;background:#233350}
+.os-bar .title{margin-left:8px;font-family:"JetBrains Mono";font-size:var(--fs-mono);color:var(--frost-dim);letter-spacing:.05em;text-transform:none}
+.os-bar .live{margin-left:auto;display:flex;align-items:center;gap:7px;font-family:"JetBrains Mono";font-size:.68rem;color:var(--ice)}
+.os-bar .live i{width:7px;height:7px;border-radius:50%;background:var(--ice);box-shadow:0 0 10px var(--ice);animation:pulse 1.8s infinite;font-style:normal}
+.os-body{padding:clamp(14px,1.6vw,24px)}
+.os-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(9px,1vw,14px);margin-bottom:clamp(10px,1.2vw,16px)}
+.stat{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px;padding:clamp(11px,1.2vw,18px)}
+.stat .lbl{font-family:"JetBrains Mono";font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--steel)}
+.stat .val{font-family:"Space Grotesk";font-size:clamp(1.3rem,1.1rem+.8vw,2rem);font-weight:600;margin-top:6px}
+.stat .val .u{font-size:.6em;color:var(--frost-dim)}
+.panel{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px;padding:clamp(12px,1.2vw,18px)}
+.panel h4{font-family:"JetBrains Mono";font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--steel);font-weight:500;margin-bottom:12px}
+.bars{display:flex;align-items:flex-end;gap:8px;height:clamp(60px,6vw,96px)}
+.bars span{flex:1;background:linear-gradient(to top,var(--teal),var(--ice));border-radius:5px 5px 0 0;opacity:.85;animation:grow 3s var(--ease) infinite alternate}
+.bars span:nth-child(2){animation-delay:.2s}.bars span:nth-child(3){animation-delay:.4s}
+.bars span:nth-child(4){animation-delay:.6s}.bars span:nth-child(5){animation-delay:.8s}
+.bars span:nth-child(6){animation-delay:1s}.bars span:nth-child(7){animation-delay:1.2s}
+@keyframes grow{from{transform:scaleY(.5);transform-origin:bottom}to{transform:scaleY(1);transform-origin:bottom}}
+.orders{margin-top:clamp(10px,1.2vw,16px)}
+.order{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:var(--fs-small)}
+.order:last-child{border-bottom:0}
+.order .tag{width:8px;height:8px;border-radius:50%;background:var(--ice);flex:none}
+.order .amt{margin-left:auto;font-family:"JetBrains Mono";color:var(--frost-dim)}
 
-  /* ---------- Footer ---------- */
-  footer{border-top:1px solid var(--line);padding:56px 0 40px;margin-top:40px}
-  .foot{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:40px}
-  .foot .brand{margin-bottom:16px}
-  .foot p{color:var(--steel);font-size:.9rem;max-width:34ch}
-  .foot h5{font-family:"JetBrains Mono";font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--frost-dim);margin-bottom:16px}
-  .foot ul{list-style:none}
-  .foot ul li{margin-bottom:10px}
-  .foot ul a{color:var(--frost-dim);font-size:.92rem;transition:color .25s}
-  .foot ul a:hover{color:var(--ice)}
-  .foot-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:48px;padding-top:24px;border-top:1px solid var(--line);flex-wrap:wrap;gap:14px}
-  .foot-bottom p{color:var(--steel);font-size:.84rem}
-  .foot-bottom .links{display:flex;gap:22px}
-  .foot-bottom .links a{color:var(--steel);font-size:.84rem;transition:color .25s}
-  .foot-bottom .links a:hover{color:var(--frost)}
+.feat-list{list-style:none;margin-top:14px}
+.feat-list li{display:flex;gap:18px;padding:clamp(16px,1.6vw,26px) 0;border-bottom:1px solid var(--line)}
+.feat-list li:last-child{border-bottom:0}
+.feat-list .chk{
+  flex:none;width:28px;height:28px;border-radius:9px;margin-top:3px;
+  background:rgba(111,224,242,.12);border:1px solid rgba(111,224,242,.3);
+  display:grid;place-items:center;
+}
+.feat-list .chk svg{width:14px;height:14px;stroke:var(--ice)}
+.feat-list h4{font-family:"Space Grotesk";font-weight:600;font-size:var(--fs-h3);margin-bottom:4px}
+.feat-list p{color:var(--frost-dim);font-size:var(--fs-small)}
 
-  /* ---------- Reveal ---------- */
-  .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
-  .reveal.in{opacity:1;transform:none}
+/* ============================================================
+   ZAHLEN — große Typo statt Standard-Statistik-Boxen
+   ============================================================ */
+.numbers{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--ink-2)}
+.numbers .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,3vw,60px)}
+.num{padding:clamp(10px,1vw,20px) 0}
+.num .big{
+  font-family:"Space Grotesk";font-weight:700;letter-spacing:-.03em;
+  font-size:clamp(2.6rem,2rem+3vw,5.4rem);line-height:1;
+  background:linear-gradient(115deg,var(--frost),var(--ice));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.num .cap{color:var(--frost-dim);margin-top:10px;font-size:var(--fs-small);max-width:26ch}
 
-  /* ---------- Responsive ---------- */
-  @media(max-width:900px){
-    .hero{grid-template-columns:1fr;gap:44px}
-    .showcase{grid-template-columns:1fr;gap:40px}
-    .steps{grid-template-columns:1fr 1fr}
-    .step::after{display:none}
-    .navlinks{display:none}
-    .nav-toggle{display:block}
-    .grid4{grid-template-columns:1fr}
-    .foot{grid-template-columns:1fr 1fr}
-  }
-  @media(max-width:560px){
-    .os-stats{grid-template-columns:1fr 1fr}
-    .os-row{grid-template-columns:1fr}
-    .steps{grid-template-columns:1fr}
-    .foot{grid-template-columns:1fr}
-    .branchen .wrap{gap:20px}
-    section{padding:72px 0}
-  }
-  @media(prefers-reduced-motion:reduce){
-    *{animation:none!important;transition:none!important}
-    .reveal{opacity:1;transform:none}
-  }
+/* ============================================================
+   CTA
+   ============================================================ */
+.cta-band{
+  border-radius:28px;padding:clamp(44px,5vw,90px) clamp(26px,4vw,72px);
+  text-align:center;position:relative;overflow:hidden;
+  background:linear-gradient(150deg,#0E1830,var(--ink-2));
+  border:1px solid var(--line-2);
+}
+.cta-band::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 25% 0%,var(--glow-ice),transparent 55%),radial-gradient(circle at 85% 120%,var(--glow-aur),transparent 55%);
+  opacity:.55;
+}
+.cta-band > *{position:relative}
+.cta-band h2{font-family:"Space Grotesk";font-weight:600;font-size:var(--fs-h2);letter-spacing:-.02em;line-height:1.08}
+.cta-band p{color:var(--frost-dim);max-width:50ch;margin:18px auto clamp(26px,2.6vw,40px)}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{border-top:1px solid var(--line);padding:clamp(44px,4vw,80px) 0 clamp(28px,2.6vw,48px)}
+.foot{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:clamp(30px,3.4vw,60px)}
+.foot .brand{margin-bottom:16px}
+.foot p{color:var(--steel);font-size:var(--fs-small);max-width:36ch}
+.foot h5{font-family:"JetBrains Mono";font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--frost-dim);margin-bottom:18px}
+.foot ul{list-style:none}
+.foot ul li{margin-bottom:12px}
+.foot ul a{color:var(--frost-dim);font-size:var(--fs-small);transition:color .25s;padding:4px 0;display:inline-block}
+.foot ul a:hover{color:var(--ice)}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:clamp(36px,3.4vw,60px);padding-top:26px;border-top:1px solid var(--line);flex-wrap:wrap;gap:14px}
+.foot-bottom p{color:var(--steel);font-size:.84rem}
+.foot-bottom .links{display:flex;gap:24px}
+.foot-bottom .links a{color:var(--steel);font-size:.84rem;transition:color .25s;padding:6px 0}
+.foot-bottom .links a:hover{color:var(--frost)}
+
+/* ============================================================
+   RESPONSIVE — Handy / Tablet / TV
+   ============================================================ */
+@media(max-width:980px){
+  .showcase{grid-template-columns:1fr}
+  .numbers .grid{grid-template-columns:1fr}
+  .num{border-bottom:1px solid var(--line);padding:clamp(20px,3vw,30px) 0}
+  .num:last-child{border-bottom:0}
+  .foot{grid-template-columns:1fr 1fr}
+}
+@media(max-width:760px){
+  .navlinks,.nav-cta{display:none}
+  .nav-toggle{display:grid;place-items:center}
+  .camp .body{padding:20px}
+  .foot{grid-template-columns:1fr}
+  .hero-content{padding-bottom:24vh}
+}
+/* TV / große Bildschirme: mehr Luft, größere Bühne */
+@media(min-width:1800px){
+  :root{--maxw:1560px}
+  body{font-size:1.25rem}
+  .os{max-width:760px;margin-left:auto}
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;animation-delay:0s!important;transition-duration:.001s!important}
+  .range,.hero-eyebrow,.hero p.lead,.hero-cta,.scroll-hint{opacity:1;transform:none;animation:none}
+  h1 .line span{transform:none;animation:none}
+  .reveal{opacity:1;transform:none}
+  .ticker-track{animation:none}
+}
 </style>
 </head>
 <body>
-<div class="aurora" aria-hidden="true"></div>
-<div class="grain" aria-hidden="true"></div>
 
-<!-- NAV -->
-<header>
+<!-- ================= NAV ================= -->
+<header id="site-header">
   <div class="wrap">
     <nav>
       <a class="brand" href="#top" aria-label="Arctis Vision Startseite">
         <span class="mark">
           <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M16 2 L28 24 H4 Z" stroke="url(#g)" stroke-width="1.6" fill="rgba(99,216,236,.08)"/>
-            <path d="M16 10 L22 24 H10 Z" stroke="url(#g)" stroke-width="1.2" opacity=".6"/>
-            <defs><linearGradient id="g" x1="0" y1="0" x2="32" y2="32">
-              <stop stop-color="#63D8EC"/><stop offset="1" stop-color="#9A8CF5"/>
+            <path d="M16 2 L28 24 H4 Z" stroke="url(#gnav)" stroke-width="1.6" fill="rgba(111,224,242,.08)"/>
+            <path d="M16 10 L22 24 H10 Z" stroke="url(#gnav)" stroke-width="1.2" opacity=".6"/>
+            <defs><linearGradient id="gnav" x1="0" y1="0" x2="32" y2="32">
+              <stop stop-color="#6FE0F2"/><stop offset="1" stop-color="#A08FFF"/>
             </linearGradient></defs>
           </svg>
         </span>
@@ -296,63 +410,171 @@
       <div class="navlinks">
         <a href="#leistungen">Leistungen</a>
         <a href="#system">System</a>
-        <a href="#ablauf">Ablauf</a>
+        <a href="#zahlen">Warum wir</a>
         <a href="#kontakt">Kontakt</a>
       </div>
-      <a href="#kontakt" class="btn btn-primary">Beratung anfragen</a>
-      <button class="nav-toggle" aria-label="Menü">
-        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      <a href="#kontakt" class="btn btn-primary nav-cta">Beratung anfragen</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menü öffnen" aria-expanded="false">
+        <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h18M4 13h18M4 19h18"/></svg>
       </button>
     </nav>
   </div>
 </header>
 
+<!-- Mobile Menü -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#leistungen">Leistungen</a>
+  <a href="#system">System</a>
+  <a href="#zahlen">Warum wir</a>
+  <a href="#kontakt">Kontakt</a>
+</div>
+
 <main id="top">
 
-  <!-- HERO -->
+  <!-- ================= HERO: PANORAMA ================= -->
+  <section class="hero" style="padding:0">
+    <div class="stars" id="stars" aria-hidden="true"></div>
+    <div class="aurora-band" aria-hidden="true"></div>
+    <div class="aurora-band b2" aria-hidden="true"></div>
+
+    <div class="wrap hero-content">
+      <span class="hero-eyebrow"><span class="dot"></span><span class="mono">Betriebssysteme für Dienstleister</span></span>
+      <h1>
+        <span class="line"><span>Das Betriebssystem,</span></span>
+        <span class="line"><span>auf dem dein <span class="grad">Geschäft läuft.</span></span></span>
+      </h1>
+      <p class="lead">Webseite, Bestellung, Kasse und Zahlung — nicht vier Insellösungen, sondern ein System. Für Restaurants, Friseure und Dienstleister.</p>
+      <div class="hero-cta">
+        <a href="#kontakt" class="btn btn-primary">Kostenlose Beratung</a>
+        <a href="#leistungen" class="btn btn-ghost">Route ansehen</a>
+      </div>
+    </div>
+
+    <!-- Bergketten (Parallax-Ebenen, selbst gezeichnet) -->
+    <div class="range r3" data-speed="0.12" aria-hidden="true">
+      <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,320 L0,200 L140,120 L260,190 L420,80 L560,170 L720,60 L880,160 L1040,90 L1200,180 L1320,110 L1440,190 L1440,320 Z" fill="#101A38"/>
+      </svg>
+    </div>
+    <div class="range r2" data-speed="0.24" aria-hidden="true">
+      <svg viewBox="0 0 1440 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,300 L0,220 L180,110 L330,200 L500,90 L660,190 L840,70 L1000,180 L1180,100 L1330,200 L1440,140 L1440,300 Z" fill="#0A1226"/>
+        <path d="M500,90 L530,130 L470,130 Z M840,70 L875,118 L805,118 Z" fill="#20304F" opacity=".9"/>
+      </svg>
+    </div>
+    <div class="range r1" data-speed="0.4" aria-hidden="true">
+      <svg viewBox="0 0 1440 260" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,260 L0,190 L200,80 L380,180 L560,60 L760,190 L960,50 L1160,170 L1320,90 L1440,170 L1440,260 Z" fill="#050912"/>
+        <path d="M560,60 L600,115 L520,115 Z M960,50 L1005,112 L915,112 Z" fill="#182742" opacity=".95"/>
+      </svg>
+    </div>
+
+    <div class="scroll-hint" aria-hidden="true"><span>Scroll</span><span class="lineV"></span></div>
+  </section>
+
+  <!-- ================= TICKER ================= -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>Restaurants</span><span>Friseure</span><span>Cafés &amp; Bars</span><span>Studios</span><span>Handwerk</span><span>Dienstleister</span>
+      <span>Restaurants</span><span>Friseure</span><span>Cafés &amp; Bars</span><span>Studios</span><span>Handwerk</span><span>Dienstleister</span>
+    </div>
+  </div>
+
+  <!-- ================= EXPEDITION / LEISTUNGEN ================= -->
   <div class="wrap">
-    <section class="hero">
-      <div class="reveal">
-        <span class="hero-eyebrow"><span class="dot"></span><span class="mono">Betriebssysteme für Dienstleister</span></span>
-        <h1>Das Betriebssystem,<br>auf dem dein <span class="grad">Geschäft läuft.</span></h1>
-        <p class="lead">Webseite, Bestellung, Kasse und Zahlung — nicht vier Insellösungen, sondern ein System. Arctis Vision baut die digitale Grundlage für Restaurants, Friseure und Dienstleister.</p>
-        <div class="hero-cta">
-          <a href="#kontakt" class="btn btn-primary">Kostenlose Beratung
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8h11M9 4l4 4-4 4"/></svg>
-          </a>
-          <a href="#system" class="btn btn-ghost">System ansehen</a>
+    <section id="leistungen">
+      <div class="sec-head reveal">
+        <span class="mono">Die Route</span>
+        <h2>Vier Etappen. Ein System.</h2>
+        <p>Wie eine Expedition zum Gipfel: Jede Etappe baut auf der letzten auf — am Ende läuft dein ganzer Betrieb auf einer Plattform.</p>
+      </div>
+      <div class="route">
+        <div class="camp reveal">
+          <div class="node"><svg fill="none" stroke-width="1.7" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18M8 21h8"/></svg></div>
+          <div class="body">
+            <span class="alt">Etappe 01 · Basislager</span>
+            <h3>Webseite</h3>
+            <p>Schnell, mobil, unverwechselbar. Deine Seite zeigt nicht nur, wer du bist — sie nimmt Bestellungen und Termine direkt an.</p>
+          </div>
         </div>
-        <div class="hero-meta">
-          <div><div class="n">4-in-1</div><div class="l">Web · Bestellung · Kasse · Zahlung</div></div>
-          <div><div class="n">100%</div><div class="l">Integriert, kein Flickwerk</div></div>
+        <div class="camp reveal">
+          <div class="node"><svg fill="none" stroke-width="1.7" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+          <div class="body">
+            <span class="alt">Etappe 02 · Lager II</span>
+            <h3>Betriebssystem</h3>
+            <p>Ein Dashboard für den ganzen Laden: Bestellungen, Termine, Umsatz und Kunden an einem Ort — live und ohne Excel-Chaos.</p>
+          </div>
+        </div>
+        <div class="camp reveal">
+          <div class="node"><svg fill="none" stroke-width="1.7" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 6h6M9 10h6M9 14h3"/></svg></div>
+          <div class="body">
+            <span class="alt">Etappe 03 · Hochlager</span>
+            <h3>Kassensystem</h3>
+            <p>Bestellung, Bon und Beleg in einem Fluss. Tresen und Online-Shop landen in derselben Kasse — mit Druck und Tagesabschluss.</p>
+          </div>
+        </div>
+        <div class="camp reveal">
+          <div class="node"><svg fill="none" stroke-width="1.7" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v10H4z"/><path d="M4 11h16M8 15h4"/></svg></div>
+          <div class="body">
+            <span class="alt">Etappe 04 · Gipfel</span>
+            <h3>Zahlung &amp; Integration</h3>
+            <p>Kartenzahlung, Bestätigungs-Mails und deine bestehenden Tools — sauber verbunden, damit alles automatisch ineinandergreift.</p>
+          </div>
         </div>
       </div>
+    </section>
+  </div>
 
-      <!-- SIGNATURE: OS mockup -->
-      <div class="reveal os" aria-hidden="true">
-        <div class="os-inner">
-          <div class="os-bar">
-            <span class="d"></span><span class="d"></span><span class="d"></span>
-            <span class="title">arctis-os · dashboard</span>
-            <span class="live"><i></i>LIVE</span>
-          </div>
-          <div class="os-body">
-            <div class="os-stats">
-              <div class="stat"><div class="lbl">Bestellungen</div><div class="val" id="c-orders">128</div></div>
-              <div class="stat"><div class="lbl">Umsatz heute</div><div class="val"><span id="c-rev">2.940</span> <span class="u">€</span></div></div>
-              <div class="stat"><div class="lbl">Ø Bon</div><div class="val">22 <span class="u">€</span></div></div>
+  <!-- ================= SYSTEM ================= -->
+  <div class="wrap">
+    <section id="system">
+      <div class="showcase">
+        <div class="reveal">
+          <span class="mono">Ein Login</span>
+          <h2 style="font-family:'Space Grotesk';font-weight:600;font-size:var(--fs-h2);letter-spacing:-.02em;line-height:1.08;margin:16px 0 10px">Der ganze Betrieb.<br>Ein Bildschirm.</h2>
+          <p style="color:var(--frost-dim)">Kein Wechseln zwischen fünf Programmen. Was am Tresen passiert, siehst du im Dashboard — und was online reinkommt, landet an der Kasse.</p>
+          <ul class="feat-list">
+            <li>
+              <span class="chk"><svg fill="none" stroke-width="2.4" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>
+              <div><h4>Live-Übersicht</h4><p>Umsatz, Bestellungen und Auslastung in Echtzeit — auf jedem Gerät.</p></div>
+            </li>
+            <li>
+              <span class="chk"><svg fill="none" stroke-width="2.4" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>
+              <div><h4>Online &amp; Vor-Ort verbunden</h4><p>Web-Bestellungen und Kasse teilen dieselben Daten. Keine Doppelerfassung.</p></div>
+            </li>
+            <li>
+              <span class="chk"><svg fill="none" stroke-width="2.4" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>
+              <div><h4>Automatische Belege</h4><p>Bon-Druck, Bestätigungs-Mail und Tagesabschluss laufen von selbst.</p></div>
+            </li>
+            <li>
+              <span class="chk"><svg fill="none" stroke-width="2.4" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>
+              <div><h4>Wächst mit dir</h4><p>Ein Standort oder zehn — das System bleibt dasselbe, du fügst nur hinzu.</p></div>
+            </li>
+          </ul>
+        </div>
+        <div class="reveal os" aria-hidden="true">
+          <div class="os-inner">
+            <div class="os-bar">
+              <span class="d"></span><span class="d"></span><span class="d"></span>
+              <span class="title">arctis-os · dashboard</span>
+              <span class="live"><i></i>LIVE</span>
             </div>
-            <div class="os-row">
+            <div class="os-body">
+              <div class="os-stats">
+                <div class="stat"><div class="lbl">Bestellungen</div><div class="val" id="c-orders">128</div></div>
+                <div class="stat"><div class="lbl">Umsatz heute</div><div class="val"><span id="c-rev">2.940</span><span class="u"> €</span></div></div>
+                <div class="stat"><div class="lbl">Auslastung</div><div class="val">82<span class="u">%</span></div></div>
+              </div>
               <div class="panel">
                 <h4>Umsatz / Stunde</h4>
                 <div class="bars">
                   <span style="height:45%"></span><span style="height:70%"></span><span style="height:55%"></span>
-                  <span style="height:88%"></span><span style="height:66%"></span><span style="height:95%"></span>
+                  <span style="height:88%"></span><span style="height:66%"></span><span style="height:95%"></span><span style="height:78%"></span>
                 </div>
               </div>
-              <div class="panel">
+              <div class="panel orders">
                 <h4>Kasse · Eingang</h4>
-                <div class="order new" id="new-order"><span class="tag"></span>Tisch 7 · Pizza<span class="amt">+18 €</span></div>
+                <div class="order"><span class="tag"></span>Tisch 7 · Pizza<span class="amt">+18 €</span></div>
                 <div class="order"><span class="tag"></span>Abholung · Salat<span class="amt">+11 €</span></div>
                 <div class="order"><span class="tag"></span>Tisch 3 · Menü<span class="amt">+34 €</span></div>
               </div>
@@ -363,137 +585,36 @@
     </section>
   </div>
 
-  <!-- BRANCHEN -->
-  <div class="branchen reveal">
+  <!-- ================= ZAHLEN ================= -->
+  <div class="numbers" id="zahlen">
     <div class="wrap">
-      <span class="lab">Gebaut für</span>
-      <div class="items">
-        <span>Restaurants</span>
-        <span>Friseure</span>
-        <span>Cafés & Bars</span>
-        <span>Studios</span>
-        <span>Handwerk</span>
-        <span>Dienstleister</span>
-      </div>
+      <section style="padding:clamp(56px,5vw,110px) 0">
+        <div class="grid">
+          <div class="num reveal">
+            <div class="big">4-in-1</div>
+            <div class="cap">Web, Bestellung, Kasse und Zahlung — ein System statt vier Abos.</div>
+          </div>
+          <div class="num reveal">
+            <div class="big">100%</div>
+            <div class="cap">Integriert. Kein Flickwerk, keine Doppelerfassung, keine Insellösungen.</div>
+          </div>
+          <div class="num reveal">
+            <div class="big">24/7</div>
+            <div class="cap">Dein System nimmt Bestellungen und Termine an — auch wenn du schläfst.</div>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 
-  <!-- LEISTUNGEN -->
-  <div class="wrap">
-    <section id="leistungen">
-      <div class="sec-head reveal">
-        <span class="mono">Leistungen</span>
-        <h2>Alles, was dein Betrieb digital braucht — aus einer Hand.</h2>
-        <p>Du bekommst keine Einzelteile, die niemand zusammensetzt. Du bekommst ein System, das ab Tag eins zusammen funktioniert.</p>
-      </div>
-      <div class="grid4">
-        <div class="card reveal">
-          <span class="idx">01</span>
-          <div class="ic"><svg fill="none" stroke-width="1.7" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18M8 21h8"/></svg></div>
-          <h3>Webseite</h3>
-          <p>Schnelle, mobile Seite, die zu deiner Marke passt und Gäste zu Kunden macht — mit Speisekarte, Terminen oder Buchung direkt integriert.</p>
-        </div>
-        <div class="card reveal">
-          <span class="idx">02</span>
-          <div class="ic"><svg fill="none" stroke-width="1.7" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
-          <h3>Betriebssystem</h3>
-          <p>Ein Dashboard für den ganzen Laden: Bestellungen, Termine, Umsatz und Kunden an einem Ort — live, übersichtlich, ohne Excel-Chaos.</p>
-        </div>
-        <div class="card reveal">
-          <span class="idx">03</span>
-          <div class="ic"><svg fill="none" stroke-width="1.7" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 6h6M9 10h6M9 14h3"/></svg></div>
-          <h3>Kassensystem</h3>
-          <p>Bestellung, Bon und Beleg in einem Fluss. Verkauf am Tresen und online landen in derselben Kasse — mit Druck und Tagesabschluss.</p>
-        </div>
-        <div class="card reveal">
-          <span class="idx">04</span>
-          <div class="ic"><svg fill="none" stroke-width="1.7" viewBox="0 0 24 24"><path d="M4 7h16v10H4z"/><path d="M4 11h16M8 15h4"/></svg></div>
-          <h3>Zahlung & Integration</h3>
-          <p>Kartenzahlung, E-Mail-Bestätigungen und deine bestehenden Tools — sauber angebunden, damit alles automatisch ineinandergreift.</p>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- SYSTEM SHOWCASE -->
-  <div class="wrap">
-    <section id="system">
-      <div class="showcase">
-        <div class="reveal">
-          <span class="mono">Ein System</span>
-          <h2 style="font-family:'Space Grotesk';font-weight:600;font-size:clamp(1.9rem,3.6vw,2.7rem);letter-spacing:-.015em;line-height:1.1;margin:16px 0 8px">Ein Login. Der ganze Betrieb.</h2>
-          <p style="color:var(--frost-dim);margin-bottom:8px">Kein Wechseln zwischen fünf Programmen. Was am Tresen passiert, siehst du im Dashboard — und was online reinkommt, landet an der Kasse.</p>
-          <ul class="feat-list">
-            <li>
-              <span class="chk"><svg fill="none" stroke-width="2.4" viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>
-              <div><h4>Live-Übersicht</h4><p>Umsatz, Bestellungen und Auslastung in Echtzeit — auf jedem Gerät.</p></div>
-            </li>
-            <li>
-              <span class="chk"><svg fill="none" stroke-width="2.4" viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>
-              <div><h4>Online & Vor-Ort verbunden</h4><p>Web-Bestellungen und Kasse teilen sich dieselben Daten. Keine Doppelerfassung.</p></div>
-            </li>
-            <li>
-              <span class="chk"><svg fill="none" stroke-width="2.4" viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>
-              <div><h4>Automatische Belege</h4><p>Bon-Druck, E-Mail-Bestätigung und Tagesabschluss laufen von selbst.</p></div>
-            </li>
-            <li>
-              <span class="chk"><svg fill="none" stroke-width="2.4" viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>
-              <div><h4>Wächst mit dir</h4><p>Ein Standort oder zehn — das System bleibt dasselbe, du fügst nur hinzu.</p></div>
-            </li>
-          </ul>
-        </div>
-        <div class="reveal os" aria-hidden="true">
-          <div class="os-inner">
-            <div class="os-bar">
-              <span class="d"></span><span class="d"></span><span class="d"></span>
-              <span class="title">arctis-os · überblick</span>
-              <span class="live"><i></i>LIVE</span>
-            </div>
-            <div class="os-body">
-              <div class="os-stats">
-                <div class="stat"><div class="lbl">Offen</div><div class="val">6</div></div>
-                <div class="stat"><div class="lbl">Heute</div><div class="val">128</div></div>
-                <div class="stat"><div class="lbl">Auslastung</div><div class="val">82<span class="u">%</span></div></div>
-              </div>
-              <div class="panel">
-                <h4>Woche</h4>
-                <div class="bars">
-                  <span style="height:50%"></span><span style="height:62%"></span><span style="height:48%"></span>
-                  <span style="height:80%"></span><span style="height:72%"></span><span style="height:96%"></span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- ABLAUF -->
-  <div class="wrap">
-    <section id="ablauf">
-      <div class="sec-head reveal">
-        <span class="mono">Ablauf</span>
-        <h2>Von der ersten Idee zum laufenden System.</h2>
-        <p>Ein klarer Weg — du weißt in jedem Schritt, was passiert und wann du live gehst.</p>
-      </div>
-      <div class="steps">
-        <div class="step reveal"><h4>Analyse</h4><p>Wir schauen uns deinen Betrieb an und finden heraus, was dich täglich Zeit kostet.</p></div>
-        <div class="step reveal"><h4>Aufbau</h4><p>Wir bauen Webseite, Kasse und Dashboard passgenau für deine Branche.</p></div>
-        <div class="step reveal"><h4>Integration</h4><p>Zahlung, Belege und deine Tools werden angebunden und getestet.</p></div>
-        <div class="step reveal"><h4>Betrieb</h4><p>Du gehst live — mit Einweisung und Support, wenn du Fragen hast.</p></div>
-      </div>
-    </section>
-  </div>
-
-  <!-- CTA / KONTAKT -->
+  <!-- ================= CTA ================= -->
   <div class="wrap">
     <section id="kontakt">
       <div class="cta-band reveal">
         <span class="mono">Kontakt</span>
-        <h2 style="margin-top:14px">Bereit, deinen Betrieb auf ein System zu stellen?</h2>
+        <h2 style="margin-top:14px">Bereit für den Aufstieg?</h2>
         <p>Erzähl uns kurz, was du machst. Wir melden uns mit einer ehrlichen Einschätzung — kostenlos und unverbindlich.</p>
-        <div class="hero-cta" style="justify-content:center">
+        <div class="hero-cta" style="justify-content:center;margin-top:0;opacity:1;animation:none">
           <a href="mailto:kontakt@arctisvision.de" class="btn btn-primary">kontakt@arctisvision.de</a>
           <a href="#top" class="btn btn-ghost">Nach oben</a>
         </div>
@@ -502,7 +623,7 @@
   </div>
 </main>
 
-<!-- FOOTER -->
+<!-- ================= FOOTER ================= -->
 <footer>
   <div class="wrap">
     <div class="foot">
@@ -510,10 +631,10 @@
         <a class="brand" href="#top">
           <span class="mark">
             <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
-              <path d="M16 2 L28 24 H4 Z" stroke="url(#g2)" stroke-width="1.6" fill="rgba(99,216,236,.08)"/>
-              <path d="M16 10 L22 24 H10 Z" stroke="url(#g2)" stroke-width="1.2" opacity=".6"/>
-              <defs><linearGradient id="g2" x1="0" y1="0" x2="32" y2="32">
-                <stop stop-color="#63D8EC"/><stop offset="1" stop-color="#9A8CF5"/>
+              <path d="M16 2 L28 24 H4 Z" stroke="url(#gfoot)" stroke-width="1.6" fill="rgba(111,224,242,.08)"/>
+              <path d="M16 10 L22 24 H10 Z" stroke="url(#gfoot)" stroke-width="1.2" opacity=".6"/>
+              <defs><linearGradient id="gfoot" x1="0" y1="0" x2="32" y2="32">
+                <stop stop-color="#6FE0F2"/><stop offset="1" stop-color="#A08FFF"/>
               </linearGradient></defs>
             </svg>
           </span>
@@ -526,7 +647,7 @@
         <ul>
           <li><a href="#leistungen">Leistungen</a></li>
           <li><a href="#system">System</a></li>
-          <li><a href="#ablauf">Ablauf</a></li>
+          <li><a href="#zahlen">Warum wir</a></li>
           <li><a href="#kontakt">Kontakt</a></li>
         </ul>
       </div>
@@ -550,32 +671,99 @@
 </footer>
 
 <script>
-  // Year
-  document.getElementById('year').textContent = new Date().getFullYear();
+(function(){
+  "use strict";
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Scroll reveal
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
-  },{threshold:.12});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  // Jahr
+  var y = document.getElementById("year");
+  if(y){ y.textContent = new Date().getFullYear(); }
 
-  // Live counter feel (respect reduced motion)
-  if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    let orders = 128, rev = 2940;
-    const cO = document.getElementById('c-orders');
-    const cR = document.getElementById('c-rev');
-    setInterval(()=>{
+  // Sterne generieren (nur obere 55% des Heros)
+  var stars = document.getElementById("stars");
+  if(stars){
+    var frag = document.createDocumentFragment();
+    for(var i=0;i<90;i++){
+      var s = document.createElement("span");
+      s.style.left = (Math.random()*100)+"%";
+      s.style.top = (Math.random()*55)+"%";
+      s.style.animationDelay = (Math.random()*4)+"s";
+      s.style.opacity = (0.2+Math.random()*0.6).toFixed(2);
+      var size = Math.random()<0.15 ? 3 : 2;
+      s.style.width = size+"px"; s.style.height = size+"px";
+      frag.appendChild(s);
+    }
+    stars.appendChild(frag);
+  }
+
+  // Nav-Hintergrund beim Scrollen
+  var headerEl = document.getElementById("site-header");
+  function onScrollHeader(){
+    if(window.scrollY > 24){ headerEl.classList.add("scrolled"); }
+    else{ headerEl.classList.remove("scrolled"); }
+  }
+  window.addEventListener("scroll", onScrollHeader, {passive:true});
+  onScrollHeader();
+
+  // Parallax der Bergketten (rAF-gedrosselt, nicht bei reduced motion)
+  var ranges = Array.prototype.slice.call(document.querySelectorAll(".range"));
+  var ticking = false;
+  function parallax(){
+    var sy = window.scrollY;
+    ranges.forEach(function(r){
+      var speed = parseFloat(r.getAttribute("data-speed")) || 0.2;
+      r.style.transform = "translateY(" + (sy*speed) + "px)";
+    });
+    ticking = false;
+  }
+  if(!reduceMotion){
+    window.addEventListener("scroll", function(){
+      if(!ticking){ window.requestAnimationFrame(parallax); ticking = true; }
+    }, {passive:true});
+  }
+
+  // Scroll-Reveals
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    },{threshold:0.12});
+    document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
+  }
+
+  // Live-Zähler im OS-Fenster
+  if(!reduceMotion){
+    var orders = 128, rev = 2940;
+    var cO = document.getElementById("c-orders");
+    var cR = document.getElementById("c-rev");
+    window.setInterval(function(){
       orders += Math.floor(Math.random()*2);
       rev += Math.floor(Math.random()*20)+5;
-      if(cO) cO.textContent = orders;
-      if(cR) cR.textContent = rev.toLocaleString('de-DE');
+      if(cO){ cO.textContent = orders; }
+      if(cR){ cR.textContent = rev.toLocaleString("de-DE"); }
     }, 3200);
   }
 
-  // Mobile menu (simple anchor jump to links section — lightweight)
-  document.querySelector('.nav-toggle')?.addEventListener('click',()=>{
-    document.getElementById('leistungen')?.scrollIntoView({behavior:'smooth'});
-  });
+  // Mobile-Menü
+  var toggle = document.getElementById("nav-toggle");
+  var menu = document.getElementById("mobile-menu");
+  if(toggle && menu){
+    toggle.addEventListener("click", function(){
+      var open = menu.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      toggle.setAttribute("aria-label", open ? "Menü schließen" : "Menü öffnen");
+    });
+    menu.querySelectorAll("a").forEach(function(a){
+      a.addEventListener("click", function(){
+        menu.classList.remove("open");
+        toggle.setAttribute("aria-expanded","false");
+      });
+    });
+  }
+})();
 </script>
 </body>
 </html>
